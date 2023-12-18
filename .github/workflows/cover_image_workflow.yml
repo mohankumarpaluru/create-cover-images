@@ -1,0 +1,29 @@
+name: Generate and Push Cover Images
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+
+jobs:
+  generate_cover_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pillow PyYAML
+
+      - name: Run Script
+        run: python .github/scripts/generate_cover_images.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
